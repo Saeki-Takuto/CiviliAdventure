@@ -106,5 +106,7 @@ void UninitPlayer(void);	//I—¹ˆ—
 void UpdatePlayer(void);	//XVˆ—
 void DrawPlayer(void);		//•`‰æˆ—
 Player* GetPlayer();
+void CollisionPlayer(int nType);
+
 
 #endif

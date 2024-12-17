@@ -18,7 +18,7 @@
 
 
 #define NUM_WIDTH (300)
-#define NUM_HEIGHT (300)
+#define NUM_HEIGHT (1000)
 
 //プロトタイプ宣言
 void InitMeshField(void);//初期化処理

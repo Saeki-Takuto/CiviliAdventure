@@ -19,18 +19,18 @@ Camera g_camera;//カメラ情報
 void InitCamera(void)
 {
 	//視点・注視点・上方向を指定する
-	g_camera.posV = D3DXVECTOR3(0.0f, 100.0f, -200.0f);
-	g_camera.posR = D3DXVECTOR3(0.0f, 75.0f, 150.0f);
+	g_camera.posV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	g_camera.posR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	g_camera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 
-	g_camera.rot = D3DXVECTOR3(-6.0f, 0.0f, 0.0f);
+	g_camera.rot = D3DXVECTOR3(-100.0f, 3.14f, 0.0f);
 
 	float fDisX = g_camera.posV.x - g_camera.posR.x;
 	float fDisY = g_camera.posV.y - g_camera.posR.y;
 	float fDisZ = g_camera.posV.z - g_camera.posR.z;
 
 
-	g_camera.fDistance = 500.0f;
+	g_camera.fDistance = 300.0f;
 
 	//角度の正規化
 	g_camera.posV.x = g_camera.posR.x + cosf(g_camera.rot.x) * sinf(g_camera.rot.y) * g_camera.fDistance;
@@ -246,7 +246,7 @@ void SetCamera(void)
 		D3DXToRadian(45.0f),
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,
 		10.0f,
-		1000.0f);
+		2000.0f);
 
 	//プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &g_camera.mtxProjection);

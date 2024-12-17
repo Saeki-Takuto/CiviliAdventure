@@ -148,7 +148,7 @@ void DrawWall(void)
 	}
 }
 
-void SetWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float alpha)
+void SetWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float alpha,int nType)
 {
 	//デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = GetDevice();
@@ -165,12 +165,22 @@ void SetWall(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float alpha)
 			g_aWall[nCntWall].rot = rot;
 			g_aWall[nCntWall].bUse = true;
 
-			//頂点座標を設定
-			pVtx[0].pos = D3DXVECTOR3(-150.0f, +150.0f, 0.0f);
-			pVtx[1].pos = D3DXVECTOR3(+150.0f, +150.0f, 0.0f);
-			pVtx[2].pos = D3DXVECTOR3(-150.0f, -150.0f, 0.0f);
-			pVtx[3].pos = D3DXVECTOR3(+150.0f, -150.0f, 0.0f);
-
+			if (nType == 1)
+			{
+				//頂点座標を設定
+				pVtx[0].pos = D3DXVECTOR3(-500.0f, +150.0f, 0.0f);
+				pVtx[1].pos = D3DXVECTOR3(+500.0f, +150.0f, 0.0f);
+				pVtx[2].pos = D3DXVECTOR3(-500.0f, -150.0f, 0.0f);
+				pVtx[3].pos = D3DXVECTOR3(+500.0f, -150.0f, 0.0f);
+			}
+			else
+			{
+				//頂点座標を設定
+				pVtx[0].pos = D3DXVECTOR3(-150.0f, +150.0f, 0.0f);
+				pVtx[1].pos = D3DXVECTOR3(+150.0f, +150.0f, 0.0f);
+				pVtx[2].pos = D3DXVECTOR3(-150.0f, -150.0f, 0.0f);
+				pVtx[3].pos = D3DXVECTOR3(+150.0f, -150.0f, 0.0f);
+			}
 			//各頂点の法線の設定(※ベクトルの大きさは1にする必要がある)
 			pVtx[0].nor = D3DXVECTOR3(0.0, 1.0, 0.0);
 			pVtx[1].nor = D3DXVECTOR3(0.0, 1.0, 0.0);

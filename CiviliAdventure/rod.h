@@ -15,6 +15,7 @@
 typedef struct
 {
 	D3DXVECTOR3 pos;
+	D3DXVECTOR3 posold;
 	D3DXVECTOR3 rot;
 	D3DXVECTOR3 movepos;
 	D3DXVECTOR3 moverot;
@@ -44,5 +45,7 @@ void UpdateRod(void);//çXêVèàóù
 void DrawRod(void);//ï`âÊèàóù
 void CollisionRod(void);//ìñÇΩÇËîªíË
 void SetRod(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 movepos, D3DXVECTOR3 moverot, int nType);
+Rod* GetRod(void);
+RodSize* GetRodSize(void);
 
 #endif

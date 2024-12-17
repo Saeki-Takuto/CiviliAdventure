@@ -26,7 +26,7 @@ void InitBlock(void)
 		&g_dwNumMatBlock,
 		&g_pMeshBlock);
 
-	g_posBlock = D3DXVECTOR3(0.0f, 0.0f, -150.0f);
+	g_posBlock = D3DXVECTOR3(0.0f, 0.0f, 500.0f);
 
 	int nNumVtx;//頂点数
 	DWORD sizeFVF;//頂点フォーマットのサイズ
@@ -133,7 +133,7 @@ void UninitBlock(void)
 
 void UpdateBlock(void)
 {
-
+	
 }
 
 void DrawBlock(void)
