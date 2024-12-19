@@ -1,5 +1,6 @@
 #include "block.h"
 #include "fade.h"
+#include "game.h"
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_apTextureBlock[128] = {};
 LPD3DXMESH g_pMeshBlock = NULL;//メッシュ(頂点情報)へのポインタ
@@ -183,36 +184,6 @@ void CollisionBlock(void)
 {
 	Player* pPlayer = GetPlayer();
 
-	////左右の当たり判定
-	//if (pPlayer->pos.z - pPlayer->vtxMaxBlock.z * 0.5f < g_posBlock.z + g_vtxMaxBlock.z&& pPlayer->pos.z + pPlayer->vtxMaxBlock.z * 0.5f > g_posBlock.z + g_vtxMinBlock.z)
-	//{
-	//	if (pPlayer->posOld.x + pPlayer->vtxMaxBlock.x * 0.5f <= g_posBlock.x + g_vtxMinBlock.x && pPlayer->pos.x + pPlayer->vtxMaxBlock.x * 0.5f > g_posBlock.x + g_vtxMinBlock.x)
-	//	{
-	//		pPlayer->pos.x = g_posBlock.x + g_vtxMinBlock.x - pPlayer->vtxMaxBlock.x * 0.5f;
-	//		pPlayer->move.x = 0.0f;
-	//	}
-	//	else if (pPlayer->posOld.x - pPlayer->vtxMaxBlock.x * 0.5f >= g_posBlock.x + g_vtxMaxBlock.x && pPlayer->pos.x - pPlayer->vtxMaxBlock.x * 0.5f < g_posBlock.x + g_vtxMaxBlock.x)
-	//	{
-	//		pPlayer->pos.x = g_posBlock.x + g_vtxMaxBlock.x + pPlayer->vtxMaxBlock.x * 0.5f;
-	//		pPlayer->move.x = 0.0f;
-	//	}
-
-	//}
-	//if (pPlayer->pos.x- pPlayer->vtxMaxBlock.x * 0.5f < g_posBlock.x + g_vtxMaxBlock.x && pPlayer->pos.x + pPlayer->vtxMaxBlock.x * 0.5f > g_posBlock.x + g_vtxMinBlock.x)
-	//{
-	//	if (pPlayer->posOld.z + pPlayer->vtxMaxBlock.z <= g_posBlock.z + g_vtxMinBlock.z && pPlayer->pos.z + pPlayer->vtxMaxBlock.z > g_posBlock.z + g_vtxMinBlock.z)
-	//	{
-	//		pPlayer->pos.z = g_posBlock.z + g_vtxMinBlock.z - pPlayer->vtxMaxBlock.z;
-	//		pPlayer->move.z = 0.0f;
-	//	}
-	//	else if (pPlayer->posOld.z - pPlayer->vtxMaxBlock.z >= g_posBlock.z + g_vtxMaxBlock.z && pPlayer->pos.z - pPlayer->vtxMaxBlock.z  < g_posBlock.z + g_vtxMaxBlock.z)
-	//	{
-	//		pPlayer->pos.z = g_posBlock.z + g_vtxMaxBlock.z + pPlayer->vtxMaxBlock.z;
-	//		pPlayer->move.z = 0.0f;
-	//	}
-
-	//}
-
 	//左右の当たり判定
 	if (pPlayer->pos.z - pPlayer->size.z * 0.5f < g_posBlock.z + g_vtxMaxBlock.z && pPlayer->pos.z + pPlayer->size.z * 0.5f > g_posBlock.z + g_vtxMinBlock.z)
 	{
@@ -220,15 +191,16 @@ void CollisionBlock(void)
 		{
 			pPlayer->pos.x = g_posBlock.x + g_vtxMinBlock.x - pPlayer->size.x * 0.5f;
 			pPlayer->move.x = 0.0f;
+			SetGameState(GAMESTATE_END);
 			SetFade(MODE_RESULT);
 		}
 		else if (pPlayer->posOld.x - pPlayer->size.x * 0.5f >= g_posBlock.x + g_vtxMaxBlock.x && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_posBlock.x + g_vtxMaxBlock.x)
 		{
 			pPlayer->pos.x = g_posBlock.x + g_vtxMaxBlock.x + pPlayer->size.x * 0.5f;
 			pPlayer->move.x = 0.0f;
+			SetGameState(GAMESTATE_END);
 			SetFade(MODE_RESULT);
 		}
-
 	}
 
 	//上下の当たり判定
@@ -238,14 +210,15 @@ void CollisionBlock(void)
 		{
 			pPlayer->pos.z = g_posBlock.z + g_vtxMinBlock.z - pPlayer->size.z*0.5f;
 			pPlayer->move.z = 0.0f;
+			SetGameState(GAMESTATE_END);
 			SetFade(MODE_RESULT);
 		}
 		else if (pPlayer->posOld.z - pPlayer->size.z*0.5f >= g_posBlock.z + g_vtxMaxBlock.z && pPlayer->pos.z - pPlayer->size.z*0.5f < g_posBlock.z + g_vtxMaxBlock.z)
 		{
 			pPlayer->pos.z = g_posBlock.z + g_vtxMaxBlock.z + pPlayer->size.z*0.5f;
 			pPlayer->move.z = 0.0f;
+			SetGameState(GAMESTATE_END);
 			SetFade(MODE_RESULT);
 		}
-
 	}
 }

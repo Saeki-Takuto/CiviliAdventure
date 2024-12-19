@@ -182,8 +182,8 @@ void UpdateRod(void)
 			{
 				g_rod[nCnt].movepos.z *= -1.0f;
 			}
+			CollisionPlayer(0);
 		}
-
 	}
 }
 
@@ -249,9 +249,9 @@ void CollisionRod(void)
 			{
 				if (pPlayer->pos.z - pPlayer->size.z * 0.5f < g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f > g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
 				{
-					//pPlayer->pos.y = g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f - pPlayer->size.y;
-					//pPlayer->move.y = 0.0f;
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+					pPlayer->pos.y = g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f - pPlayer->size.y;
+					pPlayer->move.y = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 
 				}
 			}
@@ -260,32 +260,34 @@ void CollisionRod(void)
 			{
 				if (pPlayer->pos.z - pPlayer->size.z * 0.5f < g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f > g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
 				{
-					//pPlayer->bJump = false;
-					//pPlayer->pos.y = (g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y);
-					//pPlayer->move.y = 0.0f;
- 						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+					pPlayer->bJump = false;
+					pPlayer->pos.y = (g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y);
+					pPlayer->move.y = 0.0f;
+ 						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 
 				}
 			}
 
+			
 			if (pPlayer->posOld.z + pPlayer->size.z * 0.5f <= g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f >= g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f)
 			{
-				if (pPlayer->pos.y - pPlayer->size.y < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
+				if (pPlayer->pos.y - pPlayer->size.y*0.5f < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y*0.5f > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
 				{
-					//pPlayer->pos.z = (g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f) - pPlayer->size.z * 0.5f;
-					//pPlayer->move.z = 0.0f;
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+					pPlayer->pos.z = (g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f) - pPlayer->size.z * 0.5f;
+					pPlayer->move.z = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 
 				}
 			}
+
 
 			if (pPlayer->posOld.z - pPlayer->size.z * 0.5f >= g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z - pPlayer->size.z * 0.5f <= g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f)
 			{
-				if (pPlayer->pos.y - pPlayer->size.y < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
+				if (pPlayer->pos.y - pPlayer->size.y*0.5f < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y*0.5f > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f)
 				{
-					//pPlayer->pos.z = (g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f) + pPlayer->size.z * 0.5f;
-					//pPlayer->move.z = 0.0f;
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+					pPlayer->pos.z = (g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f) + pPlayer->size.z * 0.5f;
+					pPlayer->move.z = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 
 				}
 			}
@@ -294,9 +296,9 @@ void CollisionRod(void)
 			{
 				if (pPlayer->pos.y - pPlayer->size.y < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.z - pPlayer->size.z * 0.5f < g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f > g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f)
 				{
-					//pPlayer->pos.x = (g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f) - pPlayer->size.x * 0.5f;
-					//pPlayer->move.x = 0.0f;
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+					pPlayer->pos.x = (g_rod[nCnt].pos.x - g_rodsize[g_rod[nCnt].nType].size.x * 0.5f) - pPlayer->size.x * 0.5f;
+					pPlayer->move.x = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 
 				}
 			}
@@ -305,14 +307,12 @@ void CollisionRod(void)
 			{
 				if (pPlayer->pos.y - pPlayer->size.y < g_rod[nCnt].pos.y + g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rod[nCnt].pos.y - g_rodsize[g_rod[nCnt].nType].size.y * 0.5f && pPlayer->pos.z - pPlayer->size.z * 0.5f < g_rod[nCnt].pos.z + g_rodsize[g_rod[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f > g_rod[nCnt].pos.z - g_rodsize[g_rod[nCnt].nType].size.z * 0.5f)
 				{
-					//pPlayer->pos.x = (g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f) + pPlayer->size.x * 0.5f;
-					//pPlayer->move.x = 0.0f;
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
-
+					pPlayer->pos.x = (g_rod[nCnt].pos.x + g_rodsize[g_rod[nCnt].nType].size.x * 0.5f) + pPlayer->size.x * 0.5f;
+					pPlayer->move.x = 0.0f;
+					SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 				}
 			}
 
-			CollisionPlayer(0);
 		}
 	}
 }

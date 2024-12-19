@@ -13,6 +13,7 @@ typedef enum
 {
 	MODE_CAMERA_NORMAL = 0,
 	MODE_CAMERA_PLAYER,
+	MODE_CAMERA_SHAKE,
 	MODE_CAMERA_MAX
 }MODE_CAMERA;
 
@@ -28,6 +29,7 @@ typedef struct
 	D3DXVECTOR3 rot;//向き
 	float fDistance;//視点から注視点の距離
 	int ModeCamera;
+	int nCounterShake;
 }Camera;
 
 //プロトタイプ宣言

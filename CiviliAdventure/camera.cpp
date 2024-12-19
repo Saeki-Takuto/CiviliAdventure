@@ -38,6 +38,8 @@ void InitCamera(void)
 	g_camera.posV.z = g_camera.posR.z + cosf(g_camera.rot.x) * cosf(g_camera.rot.y) * g_camera.fDistance;
 
 	g_camera.ModeCamera = 1;
+	g_camera.nCounterShake = 0;
+
 }
 
 //==================================================================
@@ -53,6 +55,8 @@ void UninitCamera(void)
 //==================================================================
 void UpdateCamera(void)
 {
+
+
 	if (KeyboardTrigger(DIK_O) == true)
 	{
 		g_camera.ModeCamera++;
@@ -90,31 +94,53 @@ void UpdateCamera(void)
 	}
 	else if (g_camera.ModeCamera == MODE_CAMERA_NORMAL)
 	{
-		////カメラの移動
-		//if (KeyboardRepeat(DIK_W) == true)
-		//{
-		//	g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
-		//	g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
+		//カメラの移動
+		if (KeyboardRepeat(DIK_W) == true)
+		{
+			g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
+			g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
 
-		//}
-		//else if (KeyboardRepeat(DIK_A) == true)
-		//{
-		//	g_camera.posR.x += sinf(D3DX_PI * 0.5f + g_camera.rot.y) * 2.0f;
-		//	g_camera.posR.z += cosf(D3DX_PI * 0.5f + g_camera.rot.y) * 2.0f;
+		}
+		else if (KeyboardRepeat(DIK_A) == true)
+		{
+			g_camera.posR.x += sinf(D3DX_PI * 0.5f + g_camera.rot.y) * 2.0f;
+			g_camera.posR.z += cosf(D3DX_PI * 0.5f + g_camera.rot.y) * 2.0f;
 
-		//}
-		//else if (KeyboardRepeat(DIK_S) == true)
-		//{
-		//	g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
-		//	g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
+		}
+		else if (KeyboardRepeat(DIK_S) == true)
+		{
+			g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
+			g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
 
-		//}
-		//else if (KeyboardRepeat(DIK_D) == true)
-		//{
-		//	g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
-		//	g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
+		}
+		else if (KeyboardRepeat(DIK_D) == true)
+		{
+			g_camera.posR.x += sinf(g_camera.rot.y) * 2.0f;
+			g_camera.posR.z += cosf(g_camera.rot.y) * 2.0f;
 
-		//}
+		}
+	}
+	else if (g_camera.ModeCamera == MODE_CAMERA_SHAKE)
+	{
+		g_camera.nCounterShake++;
+
+		if (g_camera.nCounterShake > 20*0.5f)
+		{
+			g_camera.posR.x += sinf(D3DX_PI * 0.5f + g_camera.rot.y) * 1.0f;
+			g_camera.posR.z += cosf(D3DX_PI * 0.5f + g_camera.rot.y) * 1.0f;
+
+		}
+		else if (g_camera.nCounterShake < 20*0.5f)
+		{
+			g_camera.posR.x += sinf(D3DX_PI * 0.5f + g_camera.rot.y) * -1.0f;
+			g_camera.posR.z += cosf(D3DX_PI * 0.5f + g_camera.rot.y) * -1.0f;
+
+		}
+
+		if (g_camera.nCounterShake > 20)
+		{
+			g_camera.nCounterShake = 0;
+		}
 	}
 
 	//カメラの移動
@@ -203,31 +229,10 @@ void UpdateCamera(void)
 		}
 	}
 
-	//if (KeyboardTrigger(DIK_0))
-	//{
-	//	g_camera.rot.y = 1.57f;
-	//}
-	//if (KeyboardTrigger(DIK_1))
-	//{
-	//	g_camera.rot.y = -1.57f;
-	//}
-	//if (KeyboardTrigger(DIK_2))
-	//{
-	//	g_camera.rot.y = 0.0f;
-	//}
-	//if (KeyboardTrigger(DIK_3))
-	//{
-	//	g_camera.rot.y = 3.14f;
-	//}
-
 	//角度の正規化
 	g_camera.posV.x = g_camera.posR.x + cosf(g_camera.rot.x) * sinf(g_camera.rot.y) * g_camera.fDistance;
 	g_camera.posV.y = g_camera.posR.y + sinf(g_camera.rot.x) * g_camera.fDistance;
 	g_camera.posV.z = g_camera.posR.z + cosf(g_camera.rot.x) * cosf(g_camera.rot.y) * g_camera.fDistance;
-
-	//g_camera.posV.x = g_camera.posR.x + cosf(g_camera.rot.x) * cosf(g_camera.rot.y) * g_camera.fDistance;
-	//g_camera.posV.y = g_camera.posR.y + sinf(g_camera.rot.x) * g_camera.fDistance;
-	//g_camera.posV.z = g_camera.posR.z + cosf(g_camera.rot.x) * sinf(g_camera.rot.y) * g_camera.fDistance;
 }
 
 //==================================================================

@@ -5,6 +5,8 @@
 #include "wall.h"
 #include "rod.h"
 #include "rock.h"
+#include "game.h"
+#include "fade.h"
 //グローバル変数
 Player g_player;
 int g_nCntMotion;
@@ -482,134 +484,214 @@ void DrawPlayer(void)
 	pDevice->SetMaterial(&matDef);
 }
 
+//プレイヤーの取得処理
 Player* GetPlayer()
 {
 	return &g_player;
 }
 
+//プレイヤーの当たり判定
 void CollisionPlayer(int nType)
 {
-	//棒の取得
-	Rod* pRod = GetRod();
-	//棒のサイズの取得
-	RodSize* pRodSize = GetRodSize();
+	if (nType == 0)
+	{//棒の場合
 
-	for (int nCnt = 0; nCnt < MAX_ROD; nCnt++)
-	{
-		if (pRod[nCnt].bUse == true)
+		//棒の取得
+		Rod* pRod = GetRod();
+		//棒のサイズの取得
+		RodSize* pRodSize = GetRodSize();
+
+		for (int nCnt = 0; nCnt < MAX_ROD; nCnt++)
 		{
-			//Y
-			if (pRod[nCnt].posold.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f <= g_player.pos.y - g_player.size.y &&
-				pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f >= g_player.pos.y - g_player.size.y)
+			if (pRod[nCnt].bUse == true)
 			{
-				if (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
-					pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+				//Y
+				if (pRod[nCnt].posold.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f <= g_player.pos.y - g_player.size.y && pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f >= g_player.pos.y - g_player.size.y)
 				{
-					//g_player.pos.y = pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f + g_player.size.y;
-					//g_player.move.y = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.pos.y = pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f + g_player.size.y;
+						g_player.move.y = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
 				}
-			}
 
-			if (pRod[nCnt].posold.y - pRodSize[pRod[nCnt].nType].size.y >= g_player.pos.y &&
-				pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y <= g_player.pos.y)
-			{
-				if (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
-					pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+				if (pRod[nCnt].posold.y - pRodSize[pRod[nCnt].nType].size.y >= g_player.pos.y && pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y <= g_player.pos.y)
 				{
-					//g_player.bJump = false;
-					//g_player.pos.y = (pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y);
-					//g_player.move.y = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.bJump = false;
+						g_player.pos.y = (pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y);
+						g_player.move.y = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
-
 				}
-			}
 
-			//Z
-			if (pRod[nCnt].posold.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f <= g_player.pos.z - g_player.size.z * 0.5f &&
-				pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f >= g_player.pos.z - g_player.size.z * 0.5f)
-			{
-				if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
-					pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
-					pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
-					pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+				//Z
+				if (pRod[nCnt].posold.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f <= g_player.pos.z - g_player.size.z * 0.5f && pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f >= g_player.pos.z - g_player.size.z * 0.5f)
 				{
-					//g_player.pos.z = (pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f) + g_player.size.z * 0.5f;
-					//g_player.move.z = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.pos.z = (pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f) + g_player.size.z * 0.5f;
+						g_player.move.z = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
-
 				}
-			}
 
-			if (pRod[nCnt].posold.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f >= g_player.pos.z + g_player.size.z * 0.5f &&
-				pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f <= g_player.pos.z + g_player.size.z * 0.5f)
-			{
-				if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
-					pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
-					pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
-					pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+				if (pRod[nCnt].posold.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f >= g_player.pos.z + g_player.size.z * 0.5f && pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f <= g_player.pos.z + g_player.size.z * 0.5f)
 				{
-					//g_player.pos.z = (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f) - g_player.size.z * 0.5f;
-					//g_player.move.z = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.pos.z = (pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f) - g_player.size.z * 0.5f;
+						g_player.move.z = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
-
 				}
-			}
 
-			//X
-			//左から右
-			if (pRod[nCnt].posold.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f <= g_player.pos.x - g_player.size.x * 0.5f &&
-				pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f >= g_player.pos.x - g_player.size.x * 0.5f)
-			{
-				if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
-					pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
-					pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
+				//X
+				//左から右
+				if (pRod[nCnt].posold.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f <= g_player.pos.x - g_player.size.x * 0.5f && pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f >= g_player.pos.x - g_player.size.x * 0.5f)
 				{
-					//g_player.pos.x = (pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f) + g_player.size.x * 0.5f;
-					//g_player.move.x = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.pos.x = (pRod[nCnt].pos.x + pRodSize[pRod[nCnt].nType].size.x * 0.5f) + g_player.size.x * 0.5f;
+						g_player.move.x = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
-
 				}
-			}
 
-			if (pRod[nCnt].posold.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f >= g_player.pos.x + g_player.size.x * 0.5f &&
-				pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f <= g_player.pos.x + g_player.size.x * 0.5f)
-			{
-				if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
-					pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
-					pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
-					pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
+				if (pRod[nCnt].posold.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f >= g_player.pos.x + g_player.size.x * 0.5f && pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f <= g_player.pos.x + g_player.size.x * 0.5f)
 				{
-					//g_player.pos.x = (pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f) - g_player.size.x * 0.5f;
-					//g_player.move.x = 0.0f;
-					if (nType == 0)
+					if (pRod[nCnt].pos.y - pRodSize[pRod[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRod[nCnt].pos.y + pRodSize[pRod[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRod[nCnt].pos.z - pRodSize[pRod[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRod[nCnt].pos.z + pRodSize[pRod[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
 					{
-						SetRock(D3DXVECTOR3(0.0f, 50.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
+						g_player.pos.x = (pRod[nCnt].pos.x - pRodSize[pRod[nCnt].nType].size.x * 0.5f) - g_player.size.x * 0.5f;
+						g_player.move.x = 0.0f;
+						SetRock(D3DXVECTOR3(0.0f, 25.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, -5.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), ROCKTYPE_VERTICAL);
 					}
-
 				}
 			}
 		}
 	}
+	else if (nType == 1)
+	{//岩の場合
+
+		//棒の取得
+		Rock* pRock = GetRock();
+		//棒のサイズの取得
+		RockSize* pRockSize = GetRockSize();
+
+		for (int nCnt = 0; nCnt < MAX_ROCK; nCnt++)
+		{
+			if (pRock[nCnt].bUse == true)
+			{
+				//Y
+				if (pRock[nCnt].posold.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f <= g_player.pos.y - g_player.size.y && pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f >= g_player.pos.y - g_player.size.y)
+				{
+					if (pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+					{
+						//g_player.pos.y = pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f + g_player.size.y;
+						//g_player.move.y = 0.0f;
+						SetFade(MODE_RESULT);
+					}
+				}
+
+				if (pRock[nCnt].posold.y - pRockSize[pRock[nCnt].nType].size.y >= g_player.pos.y && pRock[nCnt].pos.y - pRockSize[pRock[nCnt].nType].size.y <= g_player.pos.y)
+				{
+					if (pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+					{
+						//g_player.bJump = false;
+						//g_player.pos.y = (pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y);
+						//g_player.move.y = 0.0f;
+						SetFade(MODE_RESULT);
+
+					}
+				}
+
+				//Z
+				if (pRock[nCnt].posold.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f <= g_player.pos.z - g_player.size.z * 0.5f && pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f >= g_player.pos.z - g_player.size.z * 0.5f)
+				{
+					if (pRock[nCnt].pos.y - pRockSize[pRock[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y*0.5f &&
+						pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y*0.5f &&
+						pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+					{
+						//g_player.pos.z = (pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f) + g_player.size.z * 0.5f;
+						//g_player.move.z = 0.0f;
+						SetFade(MODE_RESULT);
+
+					}
+				}
+
+				if (pRock[nCnt].posold.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f >= g_player.pos.z + g_player.size.z * 0.5f && pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f <= g_player.pos.z + g_player.size.z * 0.5f)
+				{
+					if (pRock[nCnt].pos.y - pRockSize[pRock[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y*0.5f &&
+						pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y*0.5f &&
+						pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f < g_player.pos.x + g_player.size.x * 0.5f &&
+						pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f > g_player.pos.x - g_player.size.x * 0.5f)
+					{
+						//g_player.pos.z = (pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f) - g_player.size.z * 0.5f;
+						//g_player.move.z = 0.0f;
+						SetFade(MODE_RESULT);
+
+					}
+				}
+
+				//X
+				//左から右
+				if (pRock[nCnt].posold.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f <= g_player.pos.x - g_player.size.x * 0.5f && pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f >= g_player.pos.x - g_player.size.x * 0.5f)
+				{
+					if (pRock[nCnt].pos.y - pRockSize[pRock[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
+					{
+						//g_player.pos.x = (pRock[nCnt].pos.x + pRockSize[pRock[nCnt].nType].size.x * 0.5f) + g_player.size.x * 0.5f;
+						//g_player.move.x = 0.0f;
+						SetFade(MODE_RESULT);
+
+					}
+				}
+
+				if (pRock[nCnt].posold.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f >= g_player.pos.x + g_player.size.x * 0.5f && pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f <= g_player.pos.x + g_player.size.x * 0.5f)
+				{
+					if (pRock[nCnt].pos.y - pRockSize[pRock[nCnt].nType].size.y * 0.5f < g_player.pos.y + g_player.size.y &&
+						pRock[nCnt].pos.y + pRockSize[pRock[nCnt].nType].size.y * 0.5f > g_player.pos.y - g_player.size.y &&
+						pRock[nCnt].pos.z - pRockSize[pRock[nCnt].nType].size.z * 0.5f < g_player.pos.z + g_player.size.z * 0.5f &&
+						pRock[nCnt].pos.z + pRockSize[pRock[nCnt].nType].size.z * 0.5f > g_player.pos.z - g_player.size.z * 0.5f)
+					{
+						//g_player.pos.x = (pRock[nCnt].pos.x - pRockSize[pRock[nCnt].nType].size.x * 0.5f) - g_player.size.x * 0.5f;
+						//g_player.move.x = 0.0f;
+						SetFade(MODE_RESULT);
+
+					}
+				}
+			}
+		}
+	}
+
 }
 

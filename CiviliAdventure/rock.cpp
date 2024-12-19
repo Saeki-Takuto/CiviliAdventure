@@ -1,5 +1,7 @@
 #include "rock.h"
 #include "input.h"
+#include "game.h"
+#include "fade.h"
 //グローバル変数
 LPDIRECT3DTEXTURE9 g_apTextureRock[128][ROCKTYPE_MAX] = {};
 LPD3DXMESH g_pMeshRock[ROCKTYPE_MAX] = {};//メッシュ(頂点情報)へのポインタ
@@ -183,14 +185,9 @@ void UpdateRock(void)
 			{
 				g_rock[nCnt].bUse = false;
 			}
+			CollisionPlayer(1);
 
-
-			//if (g_rock[nCnt].pos.z > 150.0f || g_rock[nCnt].pos.z < -150.0f)
-			//{
-			//	g_rock[nCnt].movepos.z *= -1.0f;
-			//}
 		}
-
 	}
 }
 
@@ -258,6 +255,8 @@ void CollisionRock(void)
 				{
 					pPlayer->pos.y = g_rock[nCnt].pos.y - g_rocksize[g_rock[nCnt].nType].size.y * 0.5f - pPlayer->size.y;
 					pPlayer->move.y = 0.0f;
+					SetFade(MODE_RESULT);
+
 				}
 			}
 
@@ -268,24 +267,31 @@ void CollisionRock(void)
 					pPlayer->bJump = false;
 					pPlayer->pos.y = (g_rock[nCnt].pos.y + g_rocksize[g_rock[nCnt].nType].size.y);
 					pPlayer->move.y = 0.0f;
+					SetFade(MODE_RESULT);
 				}
 			}
+
 
 			if (pPlayer->posOld.z + pPlayer->size.z * 0.5f <= g_rock[nCnt].pos.z - g_rocksize[g_rock[nCnt].nType].size.z * 0.5f && pPlayer->pos.z + pPlayer->size.z * 0.5f >= g_rock[nCnt].pos.z - g_rocksize[g_rock[nCnt].nType].size.z * 0.5f)
 			{
-				if (pPlayer->pos.y - pPlayer->size.y < g_rock[nCnt].pos.y + g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rock[nCnt].pos.y - g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rock[nCnt].pos.x + g_rocksize[g_rock[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rock[nCnt].pos.x - g_rocksize[g_rock[nCnt].nType].size.x * 0.5f)
+				if (pPlayer->pos.y - pPlayer->size.y * 0.5f < g_rock[nCnt].pos.y + g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y * 0.5f > g_rock[nCnt].pos.y - g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rock[nCnt].pos.x + g_rocksize[g_rock[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rock[nCnt].pos.x - g_rocksize[g_rock[nCnt].nType].size.x * 0.5f)
 				{
 					pPlayer->pos.z = (g_rock[nCnt].pos.z - g_rocksize[g_rock[nCnt].nType].size.z * 0.5f) - pPlayer->size.z * 0.5f;
 					pPlayer->move.z = 0.0f;
+					SetFade(MODE_RESULT);
+
 				}
 			}
 
+
 			if (pPlayer->posOld.z - pPlayer->size.z * 0.5f >= g_rock[nCnt].pos.z + g_rocksize[g_rock[nCnt].nType].size.z * 0.5f && pPlayer->pos.z - pPlayer->size.z * 0.5f <= g_rock[nCnt].pos.z + g_rocksize[g_rock[nCnt].nType].size.z * 0.5f)
 			{
-				if (pPlayer->pos.y - pPlayer->size.y < g_rock[nCnt].pos.y + g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y > g_rock[nCnt].pos.y - g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rock[nCnt].pos.x + g_rocksize[g_rock[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rock[nCnt].pos.x - g_rocksize[g_rock[nCnt].nType].size.x * 0.5f)
+				if (pPlayer->pos.y - pPlayer->size.y * 0.5f < g_rock[nCnt].pos.y + g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.y + pPlayer->size.y * 0.5f > g_rock[nCnt].pos.y - g_rocksize[g_rock[nCnt].nType].size.y * 0.5f && pPlayer->pos.x - pPlayer->size.x * 0.5f < g_rock[nCnt].pos.x + g_rocksize[g_rock[nCnt].nType].size.x * 0.5f && pPlayer->pos.x + pPlayer->size.x * 0.5f > g_rock[nCnt].pos.x - g_rocksize[g_rock[nCnt].nType].size.x * 0.5f)
 				{
 					pPlayer->pos.z = (g_rock[nCnt].pos.z + g_rocksize[g_rock[nCnt].nType].size.z * 0.5f) + pPlayer->size.z * 0.5f;
 					pPlayer->move.z = 0.0f;
+					SetFade(MODE_RESULT);
+
 				}
 			}
 
@@ -295,6 +301,8 @@ void CollisionRock(void)
 				{
 					pPlayer->pos.x = (g_rock[nCnt].pos.x - g_rocksize[g_rock[nCnt].nType].size.x * 0.5f) - pPlayer->size.x * 0.5f;
 					pPlayer->move.x = 0.0f;
+					SetFade(MODE_RESULT);
+
 				}
 			}
 
@@ -304,10 +312,11 @@ void CollisionRock(void)
 				{
 					pPlayer->pos.x = (g_rock[nCnt].pos.x + g_rocksize[g_rock[nCnt].nType].size.x * 0.5f) + pPlayer->size.x * 0.5f;
 					pPlayer->move.x = 0.0f;
+					SetFade(MODE_RESULT);
+
 				}
 			}
 
-			CollisionPlayer(1);
 		}
 	}
 }

@@ -21,6 +21,7 @@
 #include "light.h"
 #include "rod.h"
 #include "rock.h"
+#include "time.h"
 
 //グローバル変数宣言
 GAMESTATE g_gameState = GAMESTATE_NONE;//ゲームの状態
@@ -40,6 +41,7 @@ void InitGame(void)
 	InitBlock();
 	InitPlayer();
 	InitWall();
+	InitTime();
 	InitCamera();
 	InitLight();
 	InitPause();
@@ -54,28 +56,18 @@ void InitGame(void)
 	SetWall(D3DXVECTOR3(150.0f, 150.0f, 0.0f), D3DXVECTOR3(0.0f, -D3DX_PI / 2, 0.0f), 0.5f,1);
 	SetWall(D3DXVECTOR3(150.0f, 150.0f, 0.0f), D3DXVECTOR3(0.0f, D3DX_PI / 2, 0.0f), 0.5f,1);
 
-	//SetRod(D3DXVECTOR3(50.0f, 0.0f, 10.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	//SetRod(D3DXVECTOR3(10.0f, 0.0f, 10.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(-1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	//SetRod(D3DXVECTOR3(50.0f, 100.0f, 10.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 1.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
-	//SetRod(D3DXVECTOR3(50.0f, 50.0f, 10.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
-	
-	//SetRod(D3DXVECTOR3(50.0f, 0.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	//SetRod(D3DXVECTOR3(10.0f, 0.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	//SetRod(D3DXVECTOR3(50.0f, 100.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
-	//SetRod(D3DXVECTOR3(50.0f, 50.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
-
 	SetRod(D3DXVECTOR3(50.0f, 30.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
 	SetRod(D3DXVECTOR3(50.0f, 10.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
 
-	SetRod(D3DXVECTOR3(-75.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	SetRod(D3DXVECTOR3(75.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
+	SetRod(D3DXVECTOR3(-75.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
+	SetRod(D3DXVECTOR3(75.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
 
-	SetRod(D3DXVECTOR3(-75.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(-1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	SetRod(D3DXVECTOR3(75.0f, 0.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
+	SetRod(D3DXVECTOR3(-75.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(-1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
+	SetRod(D3DXVECTOR3(75.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
 
-	//SetRod(D3DXVECTOR3(10.0f, 0.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_VERTICAL);
-	//SetRod(D3DXVECTOR3(50.0f, 100.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
-	//SetRod(D3DXVECTOR3(50.0f, 50.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
+	SetRod(D3DXVECTOR3(50.0f, 150.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, -1.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
+	SetRod(D3DXVECTOR3(50.0f, 75.0f,  200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 1.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), RODTYPE_BESIDE);
+
 
 	g_gameState = GAMESTATE_NORMAL;//通常状態に設定
 	g_nCounterGameState = 0;
@@ -83,11 +75,6 @@ void InitGame(void)
 	g_bPause = false;//ポーズ解除
 
 	PlaySound(SOUND_LABEL_BGM03);
-
-	//for (int nCnt = 0; nCnt < 4;nCnt++)
-	//{
-	//	SetBlock(D3DXVECTOR3(600, 800-40*nCnt, 0.0f), 40, 40, 0);
-	//}
 }
 
 //ゲーム画面の終了処理
@@ -103,6 +90,7 @@ void UninitGame(void)
 	UninitPlayer();
 	UninitBlock();
 	UninitShadow();
+	UninitTime();
 	UninitCamera();
 	UninitLight();
 	//UninitBillboard();
@@ -148,6 +136,7 @@ void UpdateGame(void)
 		UpdateRock();
 		UpdatePlayer();
 		UpdateBlock();
+		UpdateTime();
 		UpdateWall();
 		UpdateCamera();
 		UpdateLight();
@@ -220,6 +209,7 @@ void DrawGame(void)
 	DrawPlayer();
 	DrawBlock();
 	DrawWall();
+	DrawTime();
 	//DrawBillboard();
 
 	if (g_bPause == true)
